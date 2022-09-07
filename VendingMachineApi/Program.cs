@@ -30,6 +30,7 @@ builder.Services.AddAuthentication("Basic")
 
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddSingleton<IVendingService, VendingService>();
 
 var app = builder.Build();
 

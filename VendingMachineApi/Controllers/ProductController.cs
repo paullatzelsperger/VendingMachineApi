@@ -56,7 +56,7 @@ public class ProductController : ControllerBase
     }
 
     [Authorize(Role.Seller)]
-    [HttpPut("{id}", Name = "Delete product")]
+    [HttpDelete("{id}", Name = "Delete product")]
     public async Task<IActionResult> DeleteProduct(string id)
     {
         var au = this.GetAuthenticatedUser();

@@ -38,6 +38,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize(Role.Admin)] //todo: discussion: should this be available to all users?
+    [HttpGet(Name = "Get all users")]
     public async Task<IActionResult> GetAllUsers()
     {
         var res = await userService.GetAll();

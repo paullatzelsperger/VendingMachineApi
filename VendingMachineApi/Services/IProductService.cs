@@ -9,6 +9,7 @@ public interface IProductService
     Task<ServiceResult<Product>> Create(User user, Product product);
     Task<ServiceResult<Product>> Delete(User user, string productId);
     Task<ServiceResult<Product>> Update(User user, string productId, Product product);
+    Task<ServiceResult<int>> SellAmount(string product, int amount);
 }
 
 internal class ProductService : IProductService
@@ -85,5 +86,25 @@ internal class ProductService : IProductService
         // do not update Id or SellerId, could potentially break the domain logic
 
         return ServiceResult<Product>.Success(existingProduct);
+    }
+
+    public async Task<ServiceResult<int>> SellAmount(string productId, int amount)
+    {
+        var result = await GetById(productId);
+        if (result.Succeeded)
+        {
+            var product = result.Content!;
+            if (product.AmountAvailable >= amount)
+            {
+                product.AmountAvailable -= amount;
+                // no need for further action because we're dealing with an in-mem collection here    
+                return ServiceResult<int>.Success(product.AmountAvailable.Value);
+            }
+            return ServiceResult<int>.Failure("Not enough stock");
+        }
+
+        return ServiceResult<int>.Failure(result.FailureMessage!);
+
+
     }
 }
