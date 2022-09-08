@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "ef584925-d8f6-4ab4-8e3e-e3fc7b252def",
+		"name": "VendingMachineApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "647585"
+	},
+	"item": [
+		{
+			"name": "User API",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\": \"12345\",\n    \"username\": \"paul\",\n    \"password\": \"asdf\",\n    \"deposit\": 150,\n    \"roles\":[\n        \"buyer\", \"admin\", \"seller\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5198/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"ignored\",\n    \"username\": \"paul\",\n    \"deposit\": 15,\n    \"roles\": [\n        \"seller\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5198/api/user/12345",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"user",
+								"12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/user/12345",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"user",
+								"12345"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/user?username=paul",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"user"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "paul"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product API",
+			"item": [
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productName\": \"chewing-gum\",\n    \"id\": \"420\",\n    \"cost\": 10,\n    \"amountAvailable\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5198/api/product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/product/420",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"product",
+								"420"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/product/420",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"product",
+								"420"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vending API",
+			"item": [
+				{
+					"name": "Deposit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/vending/deposit?amount=100",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"vending",
+								"deposit"
+							],
+							"query": [
+								{
+									"key": "amount",
+									"value": "100"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/vending/buy?productId=420&amount=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"vending",
+								"buy"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "420"
+								},
+								{
+									"key": "amount",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Deposit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5198/api/vending/reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5198",
+							"path": [
+								"api",
+								"vending",
+								"reset"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "asdf",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "paul",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
