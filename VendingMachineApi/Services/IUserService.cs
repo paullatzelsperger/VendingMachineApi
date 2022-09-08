@@ -14,7 +14,7 @@ public interface IUserService
     Task<ServiceResult<User>> Authenticate(string username, string password);
 }
 
-public class UserService : IUserService
+internal class UserService : IUserService
 {
     //todo: convert this to a persistent storage, e.g. using EF Core
     private readonly IEntityStore<User> entityStore;

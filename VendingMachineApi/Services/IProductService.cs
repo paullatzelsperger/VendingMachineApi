@@ -13,7 +13,7 @@ public interface IProductService
     Task<ServiceResult<int>> SellAmount(string productId, int amount);
 }
 
-public class ProductService : IProductService
+internal class ProductService : IProductService
 {
     private readonly IEntityStore<Product> productStore;
 
