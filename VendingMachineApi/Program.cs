@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using VendingMachineApi.Authentication;
+using VendingMachineApi.DataAccess;
 using VendingMachineApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,9 +29,10 @@ builder.Services.AddAuthentication("Basic")
        //     };
        // });
 
-builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IVendingService, VendingService>();
+builder.Services.AddSingleton<IUserStore, InMemoryUserStore>();
 
 var app = builder.Build();
 

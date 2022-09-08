@@ -19,7 +19,7 @@ public class ServiceResult<T>
 
     public static ServiceResult<T> Failure(string message)
     {
-        return new ServiceResult<T>() { FailureMessage = message };
+        return new ServiceResult<T> { FailureMessage = message };
     }
 
     private ServiceResult(T content)

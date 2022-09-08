@@ -1,3 +1,4 @@
+using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 
 namespace VendingMachineApi.Services;
@@ -13,42 +14,45 @@ public interface IUserService
     Task<ServiceResult<User>> Authenticate(string username, string password);
 }
 
-internal class UserService : IUserService
+public class UserService : IUserService
 {
     //todo: convert this to a persistent storage, e.g. using EF Core
-    private readonly ICollection<User> userStorage;
+    private readonly IUserStore userStore;
 
-    public UserService()
+    public UserService(IUserStore userStore)
     {
-        userStorage = new List<User>();
+        this.userStore = userStore;
     }
 
     public async Task<ServiceResult<User>> Create(User user)
     {
-        var existing = await GetById(user.Id);
+        var existing = await userStore.FindById(user.Id);
 
-        if (existing.Succeeded)
+        if (existing != null)
         {
             return ServiceResult<User>.Failure("Exists");
         }
 
-        userStorage.Add(user);
+        await userStore.Save(user);
         return ServiceResult<User>.Success(user);
     }
 
     public async Task<ServiceResult<User>> Update(string userId, User user)
     {
-        var existing = await GetById(userId); // use explicit ID, ignore user.Id
+        var existing = await userStore.FindById(userId); // use explicit ID, ignore user.Id
 
-        if (existing.Succeeded)
+        if (existing != null)
         {
-            var existingUser = existing.Content!;
-            
-            existingUser.Deposit = user.Deposit;
-            existingUser.Roles = user.Roles;
+
+            existing.Deposit = user.Deposit;
+            existing.Roles = user.Roles;
             // we do not update the password. there should be a separate API for resetting it
-            
-            return ServiceResult<User>.Success(user);
+            if (await userStore.Update(existing))
+            {
+                return ServiceResult<User>.Success(user);
+            }
+
+            return ServiceResult<User>.Failure("Failed to update");
         }
 
         return ServiceResult<User>.Failure("Not Found");
@@ -56,49 +60,49 @@ internal class UserService : IUserService
 
     public async Task<ServiceResult<User>> Delete(string userId)
     {
-        var result = await GetById(userId);
+        var user = await userStore.FindById(userId);
 
-        if (result.Succeeded)
+        if (user != null)
         {
-            var actualUser = result.Content!;
-            if (userStorage.Remove(actualUser))
+            if (await userStore.Delete(user))
             {
-                return ServiceResult<User>.Success(actualUser);
+                return ServiceResult<User>.Success(user);
             }
+            return ServiceResult<User>.Failure("Failed to remove");
         }
 
-        return ServiceResult<User>.Failure("Failed to remove");
+        return ServiceResult<User>.Failure("Not Found");
     }
 
-    public Task<ServiceResult<User>> GetByName(string username)
+    public async Task<ServiceResult<User>> GetByName(string username)
     {
-        var user = userStorage.FirstOrDefault(user => user.Username == username);
-        var result = user == null ? ServiceResult<User>.Failure("Not found") : ServiceResult<User>.Success(user);
-        return Task.FromResult(result);
+        var user = await userStore.FindByName(username);
+        var result = user != null ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
+        return result;
     }
 
-    public Task<ServiceResult<User>> GetById(string userId)
+    public async Task<ServiceResult<User>> GetById(string userId)
     {
-        var user = userStorage.FirstOrDefault(user => user.Id == userId);
-        var result = user == null ? ServiceResult<User>.Failure("Not found") : ServiceResult<User>.Success(user);
-        return Task.FromResult(result);
+        var user = await userStore.FindById(userId); //.FirstOrDefault(user => user.Id == userId);
+        var result = ServiceResult<User>.Success(user);
+        return result;
     }
 
-    public Task<ServiceResult<ICollection<User>>> GetAll()
+    public async Task<ServiceResult<ICollection<User>>> GetAll()
     {
-        return Task.FromResult(ServiceResult<ICollection<User>>.Success(userStorage));
+        return ServiceResult<ICollection<User>>.Success(await userStore.FindAll());
     }
 
-    public Task<ServiceResult<User>> Authenticate(string username, string password)
+    public async Task<ServiceResult<User>> Authenticate(string username, string password)
     {
-        var user = userStorage.FirstOrDefault(user => user.Username == username);
+        var user = await userStore.FindByName(username);
         if (user == null)
         {
-            return Task.FromResult(ServiceResult<User>.Failure("Not Found"));
+            return ServiceResult<User>.Failure("Not Found");
         }
 
-        var isAuth = user.Password == password;
+        var isAuth = user!.Password == password;
 
-        return Task.FromResult(isAuth ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not Authenticated"));
+        return isAuth ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Authentication failed");
     }
 }
