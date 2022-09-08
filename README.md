@@ -2,12 +2,12 @@
 
 This is my solution to a coding challenge posed by MVP Match, for original instructions see [here](https://mvpmatch.notion.site/Backend-1-9a5476e6cb7848ec9f620ce8a64c0d06). 
 
-These are the assumptions I made:
+These are the assumptions and changes I made:
 
 - I used Basic Auth even though it is deemed unsecure, because it was the most straight-forward for testing, debugging and developing. Switching it out for JWT or oAuth would not be too hard, but API tests would have to be adapted.
 - The project is self-hosted (as opposed to: hosted by an IIS instance)
-- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp 
-- Added the `admin` role: I did this to improve security of the `/user` API. Only admins can see all users, or see, modify and delete other users. However, every user can see, update and delete its own record.
+- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp Vault
+- Added the `admin` role: in addition to the `buyer` and `seller` role, the `admin` role was added. I did this to improve security of the `/user` API. Only admins can see all users, or see, modify and delete other users. However, every user can see, update and delete its own record.
 - Use persistence: currently all data retention happens in-memory (c.f. [`IEntityStore.cs`](VendingMachine.Api/DataAccess/IEntityStore.cs)). Using EF Core, this could be swapped out for a persistent storage, such as Postgres.
 
 
