@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using VendingMachineApi.Authentication;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
@@ -55,3 +54,6 @@ app.MapControllers();
 
 
 app.Run();
+
+// must be made public so that the test project can access it. cf https://stackoverflow.com/a/70490057
+public partial class Program { }

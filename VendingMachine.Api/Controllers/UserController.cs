@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUser(string id)
     {
         var authUser = this.GetAuthenticatedUser();
-        if (authUser.Id == id || authUser.Roles.Contains(Role.Admin.ToString()))
+        if (authUser.Id == id || authUser.Roles.Contains(Role.Admin.ToString(), StringComparer.InvariantCultureIgnoreCase))
         {    var user = await userService.GetById(id);
             return MapResult(user);
             
@@ -45,20 +45,34 @@ public class UserController : ControllerBase
         return MapResult(res);
     }
 
-    [Authorize(Role.Admin)]
+    [Authorize]
     [HttpPut("{id}", Name = "Update User")]
-    public async Task<IActionResult> UpdateUser(string id, User user)
+    public async Task<IActionResult> UpdateUser(string id, User newUserDetails)
     {
-        var result = await userService.Update(id, user);
-        return MapResult(result);
+        var user = this.GetAuthenticatedUser();
+
+        if (user.Id == id || user.Roles.Contains(Role.Admin.ToString(), StringComparer.InvariantCultureIgnoreCase))
+        {
+            var result = await userService.Update(id, newUserDetails);
+            return MapResult(result);
+        }
+
+        return Forbid();
     }
 
-    [Authorize(Role.Admin)]
+    [Authorize]
     [HttpDelete("{id}", Name = "Delete user")]
     public async Task<IActionResult> DeleteUser(string id)
     {
-        var result = await userService.Delete(id);
-        return result.Succeeded ? Ok() : BadRequest(result.FailureMessage);
+        var user = this.GetAuthenticatedUser();
+
+        if (user.Id == id || user.Roles.Contains(Role.Admin.ToString(), StringComparer.InvariantCultureIgnoreCase))
+        {
+            var result = await userService.Delete(id);
+            return result.Succeeded ? Ok() : BadRequest(result.FailureMessage);
+        }
+
+        return Forbid();
     }
     
     private IActionResult MapResult(ServiceResult<ICollection<User>> result)

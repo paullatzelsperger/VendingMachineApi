@@ -4,6 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>VendingMachineApi</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="VendingMachineTest" />
+        <InternalsVisibleTo Include="VendingMachine.Test" />
+        <InternalsVisibleTo Include="VendingMachine.IntegrationTest" />
     </ItemGroup>
 
 

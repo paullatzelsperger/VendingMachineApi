@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineApi", "VendingMachineApi\VendingMachineApi.csproj", "{CEFCB5AE-8767-49EF-9A2F-4DC31741E82B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Api", "VendingMachine.Api\VendingMachine.Api.csproj", "{CEFCB5AE-8767-49EF-9A2F-4DC31741E82B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineTest", "VendingMachineTest\VendingMachineTest.csproj", "{C9448866-24A1-4A9C-B39F-9EAC961E48C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Test", "VendingMachine.Test\VendingMachine.Test.csproj", "{C9448866-24A1-4A9C-B39F-9EAC961E48C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachineApi.IntegrationTest", "VendingMachineApi.IntegrationTest\VendingMachineApi.IntegrationTest.csproj", "{0E1C206C-0C43-4A33-83F2-55CC9F3C15F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +20,9 @@ Global
 		{C9448866-24A1-4A9C-B39F-9EAC961E48C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9448866-24A1-4A9C-B39F-9EAC961E48C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9448866-24A1-4A9C-B39F-9EAC961E48C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E1C206C-0C43-4A33-83F2-55CC9F3C15F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E1C206C-0C43-4A33-83F2-55CC9F3C15F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E1C206C-0C43-4A33-83F2-55CC9F3C15F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E1C206C-0C43-4A33-83F2-55CC9F3C15F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
