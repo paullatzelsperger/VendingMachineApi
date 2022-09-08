@@ -8,11 +8,11 @@ namespace VendingMachineTest;
 public class UserServiceTest
 {
     private readonly IUserService userService;
-    private readonly Mock<IUserStore> userStoreMock;
+    private readonly Mock<IEntityStore<User>> userStoreMock;
 
     public UserServiceTest()
     {
-        userStoreMock = new Mock<IUserStore>();
+        userStoreMock = new Mock<IEntityStore<User>>();
         userService = new UserService(userStoreMock.Object);
     }
 
@@ -143,9 +143,9 @@ public class UserServiceTest
     public async Task TestAuthenticate()
     {
         var u = TestUser();
-        userStoreMock.Setup(x => x.FindByName(u.Username)).ReturnsAsync(() => u);
+        userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
-        var res = await userService.Authenticate(u.Username, u.Password!);
+        var res = await userService.Authenticate(u.Name, u.Password!);
         Assert.True(res.Succeeded);
     }
 
@@ -153,7 +153,7 @@ public class UserServiceTest
     public async Task TestAuthenticate_WrongUsername()
     {
         var u = TestUser();
-        userStoreMock.Setup(x => x.FindByName(u.Username)).ReturnsAsync(() => u);
+        userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
         var res = await userService.Authenticate("not-exist", "some-pwd");
         Assert.True(res.Failed);
@@ -164,9 +164,9 @@ public class UserServiceTest
     public async Task TestAuthenticate_WrongPassword()
     {
         var u = TestUser();
-        userStoreMock.Setup(x => x.FindByName(u.Username)).ReturnsAsync(() => u);
+        userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
-        var res = await userService.Authenticate(u.Username, "wrong-pwd");
+        var res = await userService.Authenticate(u.Name, "wrong-pwd");
         Assert.True(res.Failed);
         Assert.Equal("Authentication failed", res.FailureMessage);
     }
@@ -179,7 +179,7 @@ public class UserServiceTest
             Id = "TestId",
             Password = "randomPwd",
             Roles = new[] { "Admin" },
-            Username = "TestUser"
+            Name = "TestUser"
         };
     }
 }

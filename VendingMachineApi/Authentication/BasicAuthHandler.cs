@@ -34,7 +34,7 @@ public class BasicAuthHandler : AuthenticationHandler<BasicAuthOptions>
             if (user.Succeeded)
             {
                 context.Items["User"] = user.Content; // gives controllers access to the authenticated user
-                return AuthenticateResult.Success(new AuthenticationTicket(new GenericPrincipal(new GenericIdentity(user.Content!.Username), user.Content.Roles), "Basic"));
+                return AuthenticateResult.Success(new AuthenticationTicket(new GenericPrincipal(new GenericIdentity(user.Content!.Name), user.Content.Roles), "Basic"));
             }
 
             return AuthenticateResult.Fail(user.FailureMessage!);

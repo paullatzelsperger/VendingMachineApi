@@ -17,29 +17,29 @@ public interface IUserService
 public class UserService : IUserService
 {
     //todo: convert this to a persistent storage, e.g. using EF Core
-    private readonly IUserStore userStore;
+    private readonly IEntityStore<User> entityStore;
 
-    public UserService(IUserStore userStore)
+    public UserService(IEntityStore<User> entityStore)
     {
-        this.userStore = userStore;
+        this.entityStore = entityStore;
     }
 
     public async Task<ServiceResult<User>> Create(User user)
     {
-        var existing = await userStore.FindById(user.Id);
+        var existing = await entityStore.FindById(user.Id);
 
         if (existing != null)
         {
             return ServiceResult<User>.Failure("Exists");
         }
 
-        await userStore.Save(user);
+        await entityStore.Save(user);
         return ServiceResult<User>.Success(user);
     }
 
     public async Task<ServiceResult<User>> Update(string userId, User user)
     {
-        var existing = await userStore.FindById(userId); // use explicit ID, ignore user.Id
+        var existing = await entityStore.FindById(userId); // use explicit ID, ignore user.Id
 
         if (existing != null)
         {
@@ -47,7 +47,7 @@ public class UserService : IUserService
             existing.Deposit = user.Deposit;
             existing.Roles = user.Roles;
             // we do not update the password. there should be a separate API for resetting it
-            if (await userStore.Update(existing))
+            if (await entityStore.Update(existing))
             {
                 return ServiceResult<User>.Success(user);
             }
@@ -60,11 +60,11 @@ public class UserService : IUserService
 
     public async Task<ServiceResult<User>> Delete(string userId)
     {
-        var user = await userStore.FindById(userId);
+        var user = await entityStore.FindById(userId);
 
         if (user != null)
         {
-            if (await userStore.Delete(user))
+            if (await entityStore.Delete(user))
             {
                 return ServiceResult<User>.Success(user);
             }
@@ -76,26 +76,26 @@ public class UserService : IUserService
 
     public async Task<ServiceResult<User>> GetByName(string username)
     {
-        var user = await userStore.FindByName(username);
+        var user = await entityStore.FindByName(username);
         var result = user != null ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
         return result;
     }
 
     public async Task<ServiceResult<User>> GetById(string userId)
     {
-        var user = await userStore.FindById(userId); //.FirstOrDefault(user => user.Id == userId);
+        var user = await entityStore.FindById(userId); //.FirstOrDefault(user => user.Id == userId);
         var result = ServiceResult<User>.Success(user);
         return result;
     }
 
     public async Task<ServiceResult<ICollection<User>>> GetAll()
     {
-        return ServiceResult<ICollection<User>>.Success(await userStore.FindAll());
+        return ServiceResult<ICollection<User>>.Success(await entityStore.FindAll());
     }
 
     public async Task<ServiceResult<User>> Authenticate(string username, string password)
     {
-        var user = await userStore.FindByName(username);
+        var user = await entityStore.FindByName(username);
         if (user == null)
         {
             return ServiceResult<User>.Failure("Not Found");
