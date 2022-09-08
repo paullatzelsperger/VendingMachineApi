@@ -9,11 +9,11 @@ public interface IProductService
     Task<ServiceResult<Product>> GetById(string productName);
     Task<ServiceResult<Product>> Create(User user, Product product);
     Task<ServiceResult<Product>> Delete(User user, string productId);
-    Task<ServiceResult<Product>> Update(User user, string productId, Product product);
-    Task<ServiceResult<int>> SellAmount(string product, int amount);
+    Task<ServiceResult<Product>> Update(User user, string productId, Product newProduct);
+    Task<ServiceResult<int>> SellAmount(string productId, int amount);
 }
 
-internal class ProductService : IProductService
+public class ProductService : IProductService
 {
     private readonly IEntityStore<Product> productStore;
 
@@ -38,11 +38,11 @@ internal class ProductService : IProductService
         var res = await productStore.FindById(product.Id);
         if (res != null)
         {
-            return ServiceResult<Product>.Failure("Conflict");
+            return ServiceResult<Product>.Failure("Exists");
         }
 
-        if (product.Cost % 5 != 0) return ServiceResult<Product>.Failure("Invalid cost!");
-        if (product.AmountAvailable < 0) return ServiceResult<Product>.Failure("Invalid amount!");
+        if (product.Cost == null || product.Cost % 5 != 0) return ServiceResult<Product>.Failure("Invalid cost");
+        if (product.AmountAvailable is null or < 0) return ServiceResult<Product>.Failure("Invalid amount");
 
         product.SellerId = user.Id; // make sure the correct seller ID is used
 
@@ -61,11 +61,12 @@ internal class ProductService : IProductService
             return ServiceResult<Product>.Failure("Not Authorized");
         }
 
-        await productStore.Delete(existingProduct);
-        return ServiceResult<Product>.Success(existingProduct);
+        return await productStore.Delete(existingProduct) 
+            ? ServiceResult<Product>.Success(existingProduct) 
+            : ServiceResult<Product>.Failure("Failed to delete");
     }
 
-    public async Task<ServiceResult<Product>> Update(User user, string productId, Product product)
+    public async Task<ServiceResult<Product>> Update(User user, string productId, Product newProduct)
     {
         var existingProduct = await productStore.FindById(productId);
         if (existingProduct == null) return ServiceResult<Product>.Failure("Not found");
@@ -76,12 +77,12 @@ internal class ProductService : IProductService
         }
 
 
-        if (product.Cost % 5 != 0) return ServiceResult<Product>.Failure("Invalid amount!");
-        if (product.AmountAvailable < 0) return ServiceResult<Product>.Failure("Invalid amount!");
+        if (newProduct.Cost is null || newProduct.Cost % 5 != 0) return ServiceResult<Product>.Failure("Invalid cost");
+        if (newProduct.AmountAvailable is null or < 0) return ServiceResult<Product>.Failure("Invalid amount");
 
-        existingProduct.Cost = product.Cost;
-        existingProduct.AmountAvailable = product.AmountAvailable;
-        existingProduct.ProductName = product.ProductName;
+        existingProduct.Cost = newProduct.Cost;
+        existingProduct.AmountAvailable = newProduct.AmountAvailable;
+        existingProduct.ProductName = newProduct.ProductName;
         // do not update Id or SellerId, could potentially break the domain logic
 
         await productStore.Update(existingProduct);
@@ -94,13 +95,11 @@ internal class ProductService : IProductService
         var product = await productStore.FindById(productId);
         if (product == null) return ServiceResult<int>.Failure("Not found");
         if (!(product.AmountAvailable >= amount)) return ServiceResult<int>.Failure("Not enough stock");
-        
+
         product.AmountAvailable -= amount;
-        
-        await productStore.Save(product);
-        
+
+        await productStore.Update(product);
+
         return ServiceResult<int>.Success(product.AmountAvailable.Value);
-
-
     }
 }
