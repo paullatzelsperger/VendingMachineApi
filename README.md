@@ -2,19 +2,23 @@
 
 This is my solution to a coding challenge posed by MVP Match, for original instructions see [here](https://mvpmatch.notion.site/Backend-1-9a5476e6cb7848ec9f620ce8a64c0d06). 
 
-These are the assumptions and changes I made:
+These are the assumptions and adaptations I made:
 
-- I used Basic Auth even though it is deemed unsecure, because it was the most straight-forward for testing, debugging and developing. Switching it out for JWT or oAuth would not be too hard, but API tests would have to be adapted.
-- The project is self-hosted (as opposed to: hosted by an IIS instance)
-- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp Vault
+- I used Basic Auth even though it is deemed unsecure, because it was the most straight-forward for testing, debugging and developing. Switching it out for JWT or oAuth would not be too hard, but API tests would have to be adapted. The entire API is sessionless. 
+- The project is self-hosted (as opposed to: hosted by an IIS instance). This it can be started much like a traditional program, or a Spring Boot app. The Webserver is embedded in the application.
+- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp Vault. The application treats passwords as opaque strings assuming that API clients enforce any password complexity requirements and perform the hashing.
 - Added the `admin` role: in addition to the `buyer` and `seller` role, the `admin` role was added. I did this to improve security of the `/user` API. Only admins can see all users, or see, modify and delete other users. However, every user can see, update and delete its own record.
-- Use persistence: currently all data retention happens in-memory (c.f. [`IEntityStore.cs`](VendingMachine.Api/DataAccess/IEntityStore.cs)). Using EF Core, this could be swapped out for a persistent storage, such as Postgres.
+- In-memory stores: currently all data retention happens in-memory (c.f. [`IEntityStore.cs`](VendingMachine.Api/DataAccess/IEntityStore.cs)). Using EF Core, this could be swapped out for a persistent storage, such as Postgres.
+- Ownership of a product cannot be transferred: the spec states:
+  > while POST, PUT and DELETE can be called only by the seller user who created the product
+  
+  which - taken literally - means that transferring ownership would make it impossible to track the _original_ creator.
 
 
 
 ## Project structure
 The project is written in .NET 6 using the C# 10 language level. The solution consists of 3 projects:
-- `VendingMachine.Api`: contains all domain models, services, application glue code and api controllers etc.
+- `VendingMachine.Api`: contains all domain models, services, application glue code and api controllers etc. This is the application project itself.
 - `VendingMachine.Test`: contains unit tests for all the services
 - `VendingMachine.IntegrationTest`: contains integrations/e2e tests for all controllers
 
@@ -48,7 +52,6 @@ _Note that if you change the `username` and `password`, you'll also have to adap
 
 - introduce request DTOs and response DTOs: in order to better shape the read- and write model, data transfer objects (DTOs) should be introduced alongside a mapping layer.
 - add validation of request DTOs: incoming data should be validated, e.g. using [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
-- add documentation
 - improve `ServiceResult` esp. when dealing with Not Authorized 403. They could carry some sort of status code so that we don't have to interpret the `FailureMessage` anymore.
 - add seed data from JSON file or postman. In development scenarios it may be useful to add some seed data.
 

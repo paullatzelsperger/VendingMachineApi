@@ -2,6 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace VendingMachineApi.Models;
 
+/// <summary>
+/// Model class for a product
+/// </summary>
 public record Product : INamedEntity
 {
     public string? ProductName { get; set; }

@@ -114,19 +114,6 @@ public class UserServiceTest
     }
 
     [Fact]
-    public async Task TestGetByName()
-    {
-        var u = TestUser();
-        userStoreMock.Setup(x => x.FindByName("testname")).ReturnsAsync(() => u);
-        var res = await userService.GetByName("testname");
-        Assert.True(res.Succeeded);
-        Assert.Equal(u, res.Content);
-
-        var res2 = await userService.GetByName("not-exist");
-        Assert.False(res2.Succeeded);
-    }
-
-    [Fact]
     public async Task TestGetById()
     {
         var u = TestUser();
@@ -135,7 +122,7 @@ public class UserServiceTest
         Assert.True(res.Succeeded);
         Assert.Equal(u, res.Content);
 
-        var res2 = await userService.GetByName("not-exist");
+        var res2 = await userService.GetById("not-exist");
         Assert.False(res2.Succeeded);
     }
     [Fact]
@@ -147,7 +134,7 @@ public class UserServiceTest
         Assert.False(res.Succeeded);
         Assert.Equal("Not found", res.FailureMessage);
 
-        var res2 = await userService.GetByName("not-exist");
+        var res2 = await userService.GetById("not-exist");
         Assert.False(res2.Succeeded);
     }
 

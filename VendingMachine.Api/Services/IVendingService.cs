@@ -4,8 +4,30 @@ namespace VendingMachineApi.Services;
 
 public interface IVendingService
 {
+    /// <summary>
+    /// Buys a product for a user. The total cost of amount * product.Cost is deducted from the user's
+    /// deposit.
+    /// </summary>
+    /// <param name="user">The user who wants to buy the product</param>
+    /// <param name="productId">The product ID</param>
+    /// <param name="amount">Positive integer specifying the amount.</param>
+    /// <returns>A failed response if the user does not have sufficient deposit, or the product does not have
+    /// enough AmountAvailable (=stock). The total cost, the product and the change are returned in case of success.</returns>
     Task<ServiceResult<PurchaseResponse>> Buy(User user, string productId, int amount);
+
+    /// <summary>
+    /// Resets a user's deposit to 0.
+    /// </summary>
+    /// <param name="user">The user whos deposit is to be reset.</param>
+    /// <returns>Failed response if user not found, success with no content otherwise</returns>
     Task<ServiceResult<object>> ResetBalance(User user);
+
+    /// <summary>
+    /// Adds a certain amount to a user's deposit. 
+    /// </summary>
+    /// <param name="user">The user</param>
+    /// <param name="amount">Only 5, 10, 20, 50, 100 are acceptable values</param>
+    /// <returns>A failed result if the amount is invalid or the user does not exist.</returns>
     Task<ServiceResult<object>> Deposit(User user, int amount);
 }
 
@@ -90,8 +112,8 @@ public class VendingService : IVendingService
             {
                 change.Add(new Coin { Value = $"{value} Cent", Amount = num });
             }
-            remainder %= value;
 
+            remainder %= value;
         }
 
         return change.ToArray();

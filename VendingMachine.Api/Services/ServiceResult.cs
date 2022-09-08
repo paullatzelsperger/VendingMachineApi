@@ -1,6 +1,12 @@
 namespace VendingMachineApi.Services;
 
-public class ServiceResult<T>
+/// <summary>
+/// Generic wrapper to indicate the result of something. Whenever the result of an operation is
+/// not exceptional, in which case an exception should be thrown, the ServiceResult is the better approach
+/// as it allows for conditional code execution and collection of several operations.
+/// </summary>
+/// <typeparam name="T">The type of the content</typeparam>
+public record ServiceResult<T>
 {
     public bool Succeeded => FailureMessage == null;
     public T? Content { get; }

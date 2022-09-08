@@ -6,6 +6,12 @@ using VendingMachineApi.Models;
 
 namespace VendingMachineApi.Authorization;
 
+/// <summary>
+/// Extension of the standard <see cref="Microsoft.AspNetCore.Authorization.AuthorizeAttribute"/>
+/// to be able to specify and resolve a <see cref="Role"/>.
+/// If an incoming user request is not authenticated, or does not have the appropriate roles, a HTTP
+/// 401 and 403 is returned respectively.
+/// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 {
@@ -28,7 +34,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         {
             context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
         }
-        // return 403 when user does not have correct role
+        // return 403 when user does not have the required role
         else if (roles.Any() && !UserHasRequiredRoles(user))
         {
             context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);

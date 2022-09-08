@@ -5,11 +5,52 @@ namespace VendingMachineApi.Services;
 
 public interface IProductService
 {
+    /// <summary>
+    /// Gets all products currently in the system
+    /// </summary>
     Task<ServiceResult<ICollection<Product>>> GetAll();
-    Task<ServiceResult<Product>> GetById(string productName);
+
+    /// <summary>
+    /// Gets a product by ID.
+    /// </summary>
+    /// <param name="productId"></param>
+    /// <returns>A failed result if not found</returns>
+    Task<ServiceResult<Product>> GetById(string productId);
+
+    /// <summary>
+    /// Creates a product for the given user.
+    /// </summary>
+    /// <param name="user">The user for which the product is to be created</param>
+    /// <param name="product">The product</param>
+    /// <returns>A failure if the product exists, or invalid values have been provided for cost and amount.</returns>
     Task<ServiceResult<Product>> Create(User user, Product product);
+
+    /// <summary>
+    /// Delete a product by ID for the given user. Only the original creator of a product (SellerId) can
+    /// delete a product. 
+    /// </summary>
+    /// <param name="user">The user who issued the request.</param>
+    /// <param name="productId">The ID of the product</param>
+    /// <returns>A failed result if the user is not the original seller of the product.</returns>
     Task<ServiceResult<Product>> Delete(User user, string productId);
+
+    /// <summary>
+    /// Updates a given product for the given user. Only the original seller can update a product. Ownership
+    /// cannot be transferred.
+    /// </summary>
+    /// <param name="user">The user who issued the request.</param>
+    /// <param name="productId"></param>
+    /// <param name="newProduct"></param>
+    /// <returns></returns>
     Task<ServiceResult<Product>> Update(User user, string productId, Product newProduct);
+
+    /// <summary>
+    /// Attempts to sell the given amount of the given product, i.e. changes its AmountAvailable field.
+    /// </summary>
+    /// <param name="productId">Id of the product</param>
+    /// <param name="amount">Positive integer denoting the amount.</param>
+    /// <returns>A failed result if the product does not exist or there is not enough stock of it. Otherwise
+    /// the remaining amount is returned.</returns>
     Task<ServiceResult<int>> SellAmount(string productId, int amount);
 }
 
@@ -61,8 +102,8 @@ internal class ProductService : IProductService
             return ServiceResult<Product>.Failure("Not Authorized");
         }
 
-        return await productStore.Delete(existingProduct) 
-            ? ServiceResult<Product>.Success(existingProduct) 
+        return await productStore.Delete(existingProduct)
+            ? ServiceResult<Product>.Success(existingProduct)
             : ServiceResult<Product>.Failure("Failed to delete");
     }
 

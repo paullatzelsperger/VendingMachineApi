@@ -5,12 +5,48 @@ namespace VendingMachineApi.Services;
 
 public interface IUserService
 {
+    /// <summary>
+    /// Creates a user.
+    /// </summary>
+    /// <param name="user">The user to create anew.</param>
+    /// <returns>A failed result if the user exists, a successful result containing the user otherwise.</returns>
     Task<ServiceResult<User>> Create(User user);
+
+    /// <summary>
+    /// Updates a user identified by the given ID. Note that the ID property of the <paramref name="user"></paramref>
+    /// is ignored.
+    /// </summary>
+    /// <param name="userId">ID of the user who is to be updated.</param>
+    /// <param name="user">A user model object containing the new values. Note that the entire user object
+    /// is replaced.</param>
+    /// <returns>A failed result if the user does not exist, a successful result containing the user otherwise.</returns>
     Task<ServiceResult<User>> Update(string userId, User user);
+
+    /// <summary>
+    /// Deletes a user with the given ID
+    /// </summary>
+    /// <param name="userId">The ID of the user to delete</param>
+    /// <returns>A failed result if the user does not exist.</returns>
     Task<ServiceResult<User>> Delete(string userId);
-    Task<ServiceResult<User>> GetByName(string username);
+
+    /// <summary>
+    /// Finds a user by ID.
+    /// </summary>
+    /// <param name="userId">The user's ID</param>
+    /// <returns>A failed result if the user does not exist</returns>
     Task<ServiceResult<User>> GetById(string userId);
+
+    /// <summary>
+    /// Returns a collection of all currently available users.
+    /// </summary>
     Task<ServiceResult<ICollection<User>>> GetAll();
+
+    /// <summary>
+    /// Authenticates a user using its username and password.
+    /// </summary>
+    /// <param name="username">The username</param>
+    /// <param name="password">The password</param>
+    /// <returns>A failed result if the authentication failed, or the user was not found, the user object otherwise.</returns>
     Task<ServiceResult<User>> Authenticate(string username, string password);
 }
 
@@ -43,7 +79,6 @@ internal class UserService : IUserService
 
         if (existing != null)
         {
-
             existing.Deposit = user.Deposit;
             existing.Roles = user.Roles;
             // we do not update the password. there should be a separate API for resetting it
@@ -68,23 +103,17 @@ internal class UserService : IUserService
             {
                 return ServiceResult<User>.Success(user);
             }
+
             return ServiceResult<User>.Failure("Failed to remove");
         }
 
         return ServiceResult<User>.Failure("Not Found");
     }
 
-    public async Task<ServiceResult<User>> GetByName(string username)
-    {
-        var user = await entityStore.FindByName(username);
-        var result = user != null ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
-        return result;
-    }
-
     public async Task<ServiceResult<User>> GetById(string userId)
     {
-        var user = await entityStore.FindById(userId); 
-        var result = user != null ?ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
+        var user = await entityStore.FindById(userId);
+        var result = user != null ? ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
         return result;
     }
 

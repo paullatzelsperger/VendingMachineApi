@@ -2,13 +2,50 @@ using VendingMachineApi.Models;
 
 namespace VendingMachineApi.DataAccess;
 
-public interface IEntityStore<TEntity> 
+/// <summary>
+/// Interface for data retention.
+/// </summary>
+/// <typeparam name="TEntity">Type of the entity to store</typeparam>
+public interface IEntityStore<TEntity>
 {
+    /// <summary>
+    /// Saves an entity in the store. If the entity already exists, it will be updated, otherwise it will be added.
+    /// 
+    /// </summary>
+    /// <param name="entity">the entity to save</param>
+    /// <returns>The updated/added entity.</returns>
     Task<TEntity> Save(TEntity entity);
+
+    /// <summary>
+    /// Removes the given entity from storage. Noop if the entity does not exist
+    /// </summary>
+    /// <param name="entity">The entity to delete.</param>
+    /// <returns>true if the entity was deleted, false otherwise</returns>
     Task<bool> Delete(TEntity entity);
+    /// <summary>
+    /// Finds an entity based on its name. Names are presumed unique.
+    /// </summary>
+    /// <param name="name">The name</param>
+    /// <returns>null if not found.</returns>
     Task<TEntity?> FindByName(string name);
+    /// <summary>
+    /// Finds an entity based on its ID. IDs are presumed unique.
+    /// </summary>
+    /// <param name="id">The entity ID</param>
+    /// <returns>null if not found</returns>
     Task<TEntity?> FindById(string id);
+    /// <summary>
+    /// Gets all entities currently in the store
+    /// </summary>
+    /// <returns></returns>
     Task<ICollection<TEntity>> FindAll();
+    /// <summary>
+    /// Updates an entity if it exists. Does nothing if the entity does not exist. It is
+    /// up to the implementor whether the update happens in-place (e.g. SQL UPDATE) or through
+    /// remove-add (e.g. in memory collections).
+    /// </summary>
+    /// <param name="existing">The entity to update</param>
+    /// <returns>true if updated, false otherwise.</returns>
     Task<bool> Update(TEntity existing);
 }
 
@@ -21,10 +58,17 @@ internal class InMemoryEntityStore<TEntity> : IEntityStore<TEntity> where TEntit
         store = new List<TEntity>();
     }
 
-    public Task<TEntity> Save(TEntity entity)
+    public async Task<TEntity> Save(TEntity entity)
     {
-        store.Add(entity);
-        return Task.FromResult(entity);
+        if (await FindById(entity.Id) != null)
+        {
+            await Update(entity);
+        }
+        else
+        {
+            store.Add(entity);
+        }
+        return entity;
     }
 
     public Task<bool> Delete(TEntity entity)

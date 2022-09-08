@@ -4,10 +4,16 @@ using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using VendingMachineApi.Models;
 using VendingMachineApi.Services;
 
 namespace VendingMachineApi.Authentication;
-
+/// <summary>
+/// Checks whether an incoming request contains an "Authorization" header, and if so, authenticates
+/// against the <see cref="IUserService"/>.
+/// If the basic auth credentials were successfully authenticated, the <see cref="User"/> is attached
+/// to the <see cref="HttpContext"/> for the downstream request pipeline. 
+/// </summary>
 public class BasicAuthHandler : AuthenticationHandler<BasicAuthOptions>
 {
     private readonly IUserService userService;
