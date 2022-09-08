@@ -36,7 +36,7 @@ internal class ProductService : IProductService
     public async Task<ServiceResult<Product>> Create(User user, Product product)
     {
         var res = await productStore.FindById(product.Id);
-        if (res == null)
+        if (res != null)
         {
             return ServiceResult<Product>.Failure("Conflict");
         }
