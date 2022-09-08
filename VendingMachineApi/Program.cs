@@ -34,6 +34,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddSingleton<IProductService, ProductService>();
 builder.Services.AddSingleton<IVendingService, VendingService>();
 builder.Services.AddSingleton<IEntityStore<User>, InMemoryEntityStore<User>>();
+builder.Services.AddSingleton<IEntityStore<Product>, InMemoryEntityStore<Product>>();
 
 var app = builder.Build();
 

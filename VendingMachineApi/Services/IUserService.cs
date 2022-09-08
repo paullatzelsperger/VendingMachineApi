@@ -83,8 +83,8 @@ public class UserService : IUserService
 
     public async Task<ServiceResult<User>> GetById(string userId)
     {
-        var user = await entityStore.FindById(userId); //.FirstOrDefault(user => user.Id == userId);
-        var result = ServiceResult<User>.Success(user);
+        var user = await entityStore.FindById(userId); 
+        var result = user != null ?ServiceResult<User>.Success(user) : ServiceResult<User>.Failure("Not found");
         return result;
     }
 
