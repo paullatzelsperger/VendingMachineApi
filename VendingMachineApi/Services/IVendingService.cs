@@ -9,7 +9,7 @@ public interface IVendingService
     Task<ServiceResult<object>> Deposit(User user, int amount);
 }
 
-internal class VendingService : IVendingService
+public class VendingService : IVendingService
 {
     private static readonly int[] ValidAmounts = { 5, 10, 20, 50, 100 };
     private readonly IUserService userService;
@@ -70,7 +70,7 @@ internal class VendingService : IVendingService
     {
         if (!ValidateAmount(amount))
         {
-            return ServiceResult<object>.Failure("Invalid deposit!");
+            return ServiceResult<object>.Failure("Invalid deposit");
         }
 
         user.Deposit += amount;
@@ -82,16 +82,19 @@ internal class VendingService : IVendingService
     private Coin[] CalculateChange(int userDeposit)
     {
         var remainder = userDeposit;
-        var arr = new Coin[5]; //5, 10, 20, 50, 100 cents
-        var ix = 4;
+        var change = new List<Coin>(); //5, 10, 20, 50, 100 cents
         foreach (var value in ValidAmounts.Reverse())
         {
             var num = remainder / value;
-            arr[ix--] = new Coin { Value = $"{value} Cent", Amount = num };
+            if (num > 0)
+            {
+                change.Add(new Coin { Value = $"{value} Cent", Amount = num });
+            }
             remainder %= value;
+
         }
 
-        return arr;
+        return change.ToArray();
     }
 
     private bool ValidateAmount(int amount)
