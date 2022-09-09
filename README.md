@@ -4,10 +4,11 @@ This is my solution to a coding challenge posed by MVP Match, for original instr
 
 These are the assumptions and adaptations I made:
 
-- I used Basic Auth even though it is deemed unsecure, because it was the most straight-forward for testing, debugging and developing. Switching it out for JWT or oAuth would not be too hard, but API tests would have to be adapted. The entire API is sessionless. 
-- The project is self-hosted (as opposed to: hosted by an IIS instance). This it can be started much like a traditional program, or a Spring Boot app. The Webserver is embedded in the application.
-- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp Vault. The application treats passwords as opaque strings assuming that API clients enforce any password complexity requirements and perform the hashing.
-- the CRUD endpoint for `/user` does not allow to change the password. while it would be trivial to implement by simply uncommengint line 85 in the [user service](VendingMachine.Api/Services/IUserService.cs), in real-world scenarios there usually is a dedicated endpoint and workflow for that.
+- I used Basic Auth because it was the most straight-forward for testing, debugging and developing. Switching it out for JWT or oAuth would not be too hard, but API tests and the postman collection would have to be adapted. The entire API is sessionless. 
+- The project is self-hosted (as opposed to: hosted by an IIS instance). Thus it can be started much like a traditional program, or a Spring Boot app. The webserver is embedded in the application.
+- The application does not perform any password hashing on its own, again for simplicity's sake. It is assumed that in production enviroments they would be hashed and salted and stored in a safe location, e.g. something like Azure Keyvault or Hashicorp Vault. The application treats passwords as opaque strings assuming that API clients enforce any password complexity requirements and perform the hashing. Especially when things like JWT or OAuth are used, the user credentials would likely be stored out-of-band.
+- the CRUD endpoint for `/user` does not allow to change the password. While it would be trivial to implement, in real-world scenarios there usually is a dedicated endpoint and workflow for that.
+- the `/user` endpoint uses a `UserDto` for reading and updating, that does not have the password for data privacy/security reasons.
 - Added the `admin` role: in addition to the `buyer` and `seller` role, the `admin` role was added. I did this to improve security of the `/user` API. Only admins can see all users, or see, modify and delete other users. However, every user can see, update and delete its own record.
 - In-memory stores: currently all data retention happens in-memory (c.f. [`IEntityStore.cs`](VendingMachine.Api/DataAccess/IEntityStore.cs)). Using EF Core, this could be swapped out for a persistent storage, such as Postgres.
 - Ownership of a product cannot be transferred: the spec states:
@@ -51,7 +52,7 @@ curl --location --request POST 'http://localhost:5198/api/user' \
 _Note that if you change the `username` and `password`, you'll also have to adapt the authentication in the postman collection!_
 ## Future Work:
 
-- introduce request DTOs and response DTOs: in order to better shape the read- and write model, data transfer objects (DTOs) should be introduced alongside a mapping layer.
+- introduce more request DTOs and response DTOs: in order to better shape the read- and write model, data transfer objects (DTOs) could be introduced alongside a mapping layer.
 - add validation of request DTOs: incoming data should be validated, e.g. using [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
 - improve `ServiceResult` esp. when dealing with Not Authorized 403. They could carry some sort of status code so that we don't have to interpret the `FailureMessage` anymore.
 - add seed data from JSON file or postman. In development scenarios it may be useful to add some seed data.

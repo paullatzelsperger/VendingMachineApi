@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using VendingMachineApi.Controllers;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 
@@ -48,9 +49,9 @@ public class UserApiTest : ApiTest
         var response = await HttpClient.GetAsync($"api/user/{id}");
 
         response.IsSuccessStatusCode.Should().BeTrue();
-        var receivedUser = JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync(), JsonOptions);
+        var receivedUser = JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), JsonOptions);
 
-        TestUser.Should().BeEquivalentTo(receivedUser);
+        TestUser.AsDto().Should().BeEquivalentTo(receivedUser);
     }
 
     [Fact]
@@ -104,7 +105,7 @@ public class UserApiTest : ApiTest
         response.IsSuccessStatusCode.Should().BeTrue();
         var users = JsonSerializer.Deserialize<ICollection<User>>(await response.Content.ReadAsStringAsync(), JsonOptions);
         users.Should().HaveCount(2);
-        users.Should().ContainEquivalentOf(TestUser).And.ContainEquivalentOf(user);
+        users.Should().ContainEquivalentOf(TestUser.AsDto()).And.ContainEquivalentOf(user.AsDto());
     }
 
     [Fact]
@@ -131,8 +132,8 @@ public class UserApiTest : ApiTest
 
         var response = await HttpClient.PutAsync($"api/user/{user.Id}", JsonContent.Create(modifiedUser));
         response.IsSuccessStatusCode.Should().BeTrue();
-        JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync(), JsonOptions)
-                      .Should().BeEquivalentTo(modifiedUser);
+        JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), JsonOptions)
+                      .Should().BeEquivalentTo(modifiedUser.AsDto());
         
     }
 

@@ -1,3 +1,4 @@
+using VendingMachineApi.Controllers;
 using VendingMachineApi.Models;
 
 namespace VendingMachineApi.Services;
@@ -59,7 +60,7 @@ public class VendingService : IVendingService
 
         // update data model
         user.Deposit -= totalCost;
-        await userService.Update(user.Id, user);
+        await userService.Update(user.Id, user.AsDto());
 
         // also checks stock
         var serviceResult = await productService.SellAmount(product.Id, amount);
@@ -84,7 +85,7 @@ public class VendingService : IVendingService
     public async Task<ServiceResult<object>> ResetBalance(User user)
     {
         user.Deposit = 0;
-        var res = await userService.Update(user.Id, user);
+        var res = await userService.Update(user.Id, user.AsDto());
         return res.Succeeded ? ServiceResult<object>.Success() : ServiceResult<object>.Failure(res.FailureMessage!);
     }
 
@@ -96,7 +97,7 @@ public class VendingService : IVendingService
         }
 
         user.Deposit += amount;
-        var updateRes = await userService.Update(user.Id, user);
+        var updateRes = await userService.Update(user.Id, user.AsDto());
 
         return updateRes.Succeeded ? ServiceResult<object>.Success() : ServiceResult<object>.Failure(updateRes.FailureMessage!);
     }

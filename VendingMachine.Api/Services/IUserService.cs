@@ -18,9 +18,9 @@ public interface IUserService
     /// </summary>
     /// <param name="userId">ID of the user who is to be updated.</param>
     /// <param name="user">A user model object containing the new values. Note that the entire user object
-    /// is replaced.</param>
+    ///     is replaced.</param>
     /// <returns>A failed result if the user does not exist, a successful result containing the user otherwise.</returns>
-    Task<ServiceResult<User>> Update(string userId, User user);
+    Task<ServiceResult<User>> Update(string userId, UserDto user);
 
     /// <summary>
     /// Deletes a user with the given ID
@@ -73,7 +73,7 @@ internal class UserService : IUserService
         return ServiceResult<User>.Success(user);
     }
 
-    public async Task<ServiceResult<User>> Update(string userId, User user)
+    public async Task<ServiceResult<User>> Update(string userId, UserDto user)
     {
         var existing = await entityStore.FindById(userId); // use explicit ID, ignore user.Id
 
@@ -81,10 +81,11 @@ internal class UserService : IUserService
         {
             existing.Deposit = user.Deposit;
             existing.Roles = user.Roles;
+            existing.Username = user.Username;
             // we do not update the password. there should be a separate API for resetting it
             if (await entityStore.Update(existing))
             {
-                return ServiceResult<User>.Success(user);
+                return ServiceResult<User>.Success(existing);
             }
 
             return ServiceResult<User>.Failure("Failed to update");

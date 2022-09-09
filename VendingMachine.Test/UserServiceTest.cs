@@ -1,4 +1,5 @@
 using Moq;
+using VendingMachineApi.Controllers;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 using VendingMachineApi.Services;
@@ -48,7 +49,7 @@ public class UserServiceTest
 
         u.Roles = new[] { "SomeNewRole" };
 
-        var res = await userService.Update(u.Id, u);
+        var res = await userService.Update(u.Id, u.AsDto());
         Assert.True(res.Succeeded);
     }
 
@@ -60,7 +61,7 @@ public class UserServiceTest
 
         u.Roles = new[] { "SomeNewRole" };
 
-        var res = await userService.Update(u.Id, u);
+        var res = await userService.Update(u.Id, u.AsDto());
         Assert.True(res.Failed);
         Assert.Equal("Not Found", res.FailureMessage, ignoreCase: true);
     }
@@ -74,7 +75,7 @@ public class UserServiceTest
 
         u.Roles = new[] { "SomeNewRole" };
 
-        var res = await userService.Update(u.Id, u);
+        var res = await userService.Update(u.Id, u.AsDto());
         Assert.True(res.Failed);
         Assert.Equal("Failed to update", res.FailureMessage, ignoreCase: true);
     }

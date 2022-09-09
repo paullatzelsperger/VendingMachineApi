@@ -47,7 +47,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpPut("{id}", Name = "Update User")]
-    public async Task<IActionResult> UpdateUser(string id, User newUserDetails)
+    public async Task<IActionResult> UpdateUser(string id, UserDto newUserDetails)
     {
         var user = this.GetAuthenticatedUser();
 
@@ -77,11 +77,12 @@ public class UserController : ControllerBase
     
     private IActionResult MapResult(ServiceResult<ICollection<User>> result)
     {
-        return result.Succeeded ? Ok(result.Content) : BadRequest(result.FailureMessage);
+        return result.Succeeded ? Ok(result.Content!.Select(u => u.AsDto()).ToList()) : BadRequest(result.FailureMessage);
     }
     
     private IActionResult MapResult(ServiceResult<User> result)
     {
-        return result.Succeeded ? Ok(result.Content) : BadRequest(result.FailureMessage);
+        
+        return result.Succeeded ? Ok(result.Content!.AsDto()) : BadRequest(result.FailureMessage);
     }
 }

@@ -1,4 +1,5 @@
 using Moq;
+using VendingMachineApi.Controllers;
 using VendingMachineApi.Models;
 using VendingMachineApi.Services;
 
@@ -96,7 +97,7 @@ public class VendingServiceTest
     {
         var u = TestUser();
 
-        userServiceMock.Setup(x => x.Update(u.Id, u)).ReturnsAsync(() => ServiceResult<User>.Success(u));
+        userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Success(u));
 
         var res = await vendingService.ResetBalance(u);
         Assert.True(res.Succeeded);
@@ -107,7 +108,7 @@ public class VendingServiceTest
     public async Task TestResetBalance_Failed()
     {
         var u = TestUser();
-        userServiceMock.Setup(x => x.Update(u.Id, u)).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
+        userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
         var res = await vendingService.ResetBalance(u);
         Assert.False(res.Succeeded);
     }
@@ -122,7 +123,7 @@ public class VendingServiceTest
     {
         var u = TestUser();
 
-        userServiceMock.Setup(x => x.Update(u.Id, u)).ReturnsAsync(ServiceResult<User>.Success);
+        userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(ServiceResult<User>.Success);
 
         var res = await vendingService.Deposit(u, amount);
         Assert.True(res.Succeeded);
@@ -147,7 +148,7 @@ public class VendingServiceTest
     public async Task TestDeposit_FailedToUpdate()
     {
         var u = TestUser();
-        userServiceMock.Setup(x => x.Update(u.Id, u)).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
+        userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
 
         var res = await vendingService.Deposit(u, 50);
         Assert.False(res.Succeeded);

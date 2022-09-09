@@ -34,7 +34,7 @@ public class ApiTest
             Username = "TestUser",
             Deposit = 100,
             Id = TestUserId,
-            Password = "p1ssw0rd",
+            Password = "p4ssw0rd",
             Roles = new[] { "buyer", "seller", "admin" }
         };
         var type = typeof(IEntityStore<User>);
