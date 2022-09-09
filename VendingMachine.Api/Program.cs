@@ -30,10 +30,10 @@ builder.Services.AddAuthentication("Basic")
        // });
 
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddSingleton<IProductService, ProductService>();
-builder.Services.AddSingleton<IVendingService, VendingService>();
-builder.Services.AddSingleton<IEntityStore<User>, InMemoryEntityStore<User>>();
-builder.Services.AddSingleton<IEntityStore<Product>, InMemoryEntityStore<Product>>();
+builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IVendingService, VendingService>();
+builder.Services.AddSingleton<IEntityStore<User>, DbUserStore>();
+builder.Services.AddSingleton<IEntityStore<Product>, DbProductStore>();
 
 var app = builder.Build();
 
@@ -45,7 +45,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAuthentication();
 app.UseAuthorization();

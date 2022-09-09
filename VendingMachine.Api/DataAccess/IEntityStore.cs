@@ -44,9 +44,9 @@ public interface IEntityStore<TEntity>
     /// up to the implementor whether the update happens in-place (e.g. SQL UPDATE) or through
     /// remove-add (e.g. in memory collections).
     /// </summary>
-    /// <param name="existing">The entity to update</param>
+    /// <param name="newUserValues">The entity to update</param>
     /// <returns>true if updated, false otherwise.</returns>
-    Task<bool> Update(TEntity existing);
+    Task<bool> Update(TEntity newUserValues);
 }
 
 internal class InMemoryEntityStore<TEntity> : IEntityStore<TEntity> where TEntity : INamedEntity
@@ -91,11 +91,11 @@ internal class InMemoryEntityStore<TEntity> : IEntityStore<TEntity> where TEntit
         return Task.FromResult(store);
     }
 
-    public Task<bool> Update(TEntity existing)
+    public Task<bool> Update(TEntity newUserValues)
     {
-        var removed = store.Remove(existing);
+        var removed = store.Remove(newUserValues);
         if (removed)
-            store.Add(existing);
+            store.Add(newUserValues);
         return Task.FromResult(removed);
     }
 }

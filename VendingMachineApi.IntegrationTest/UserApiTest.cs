@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using VendingMachineApi.Controllers;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
@@ -134,7 +133,8 @@ public class UserApiTest : ApiTest
         response.IsSuccessStatusCode.Should().BeTrue();
         JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), JsonOptions)
                       .Should().BeEquivalentTo(modifiedUser.AsDto());
-        
+        (await userStore.FindAll()).Should().HaveCount(2);
+
     }
 
     [Fact]
@@ -244,8 +244,8 @@ public class UserApiTest : ApiTest
         var user = new User
         {
             Deposit = 10,
-            Id = "test-id",
-            Username = "test-name",
+            Id = "some-id",
+            Username = "some-user",
             Password = "test-pwd",
             Roles = new[] { "buyer" }
         };

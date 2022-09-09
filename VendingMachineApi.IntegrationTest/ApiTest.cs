@@ -9,7 +9,9 @@ using VendingMachineApi.Models;
 
 namespace VendingMachineApi.IntegrationTest;
 
-public class ApiTest
+//test should run one after the other, to avoid race conditions
+[Collection("api test collection")]
+public class ApiTest : IDisposable
 {
     protected readonly HttpClient HttpClient;
     protected User TestUser => ReloadTestUser();
@@ -20,8 +22,8 @@ public class ApiTest
         PropertyNameCaseInsensitive = true
     };
 
-    private readonly IEntityStore<User>? userStore;
-    private const string TestUserId = "testuser123";
+    private readonly IEntityStore<User> userStore;
+    private const string TestUserId = "TestUser";
 
     protected ApiTest()
     {
@@ -39,8 +41,8 @@ public class ApiTest
         };
         var type = typeof(IEntityStore<User>);
 
-        userStore = GetService(type) as IEntityStore<User>;
-        userStore!.Save(user);
+        userStore = GetService(type) as IEntityStore<User> ?? throw new InvalidOperationException();
+        userStore.Save(user);
         HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username, user.Password);
     }
 
@@ -60,5 +62,14 @@ public class ApiTest
         var t = userStore?.FindById(TestUserId);
         t?.Wait();
         return t?.Result!;
+    }
+
+    public void Dispose()
+    {
+        new UserContext().Database.EnsureDeleted();
+        new UserContext().Database.EnsureCreated();
+        new ProductContext().Database.EnsureDeleted();
+        new ProductContext().Database.EnsureCreated();
+        
     }
 }
