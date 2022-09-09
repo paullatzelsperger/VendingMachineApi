@@ -10,7 +10,7 @@ public record User : INamedEntity
     public string Id { get; set; }
     public string? Username { get; set; }
 
-    [JsonIgnore]
+    [JsonIgnore] // does not need to be serialized
     public string Name
     {
         get => Username!;
@@ -19,5 +19,5 @@ public record User : INamedEntity
 
     public string? Password { get; set; }
     public int? Deposit { get; set; }
-    public string[] Roles { get; set;  } // todo: externalize this, users need not know about their roles
+    public string[] Roles { get; set;  } // todo: externalize this, users should not know about their roles
 }
