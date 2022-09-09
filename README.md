@@ -23,7 +23,7 @@ The project is written in .NET 6 using the C# 10 language level. The solution co
 - `VendingMachine.Api`: contains all application glue code and api controllers etc. This is the runnable application project.
 - `VendingMachine.Api.Test`: this contains integration/e2e tests for the application
 - `VendingMachine.Core`: contains services and some core interfaces
-- `VendingMachine.Core`: contains model classes, e.g. `User`, `Project`,...
+- `VendingMachine.Model`: contains model classes, e.g. `User`, `Project`,...
 - `VendingMachine.Core.Test`: contains tests for the core project
 - `VendingMachine.Data`: data layer, i.e. EF Core integration
 - `VendingMachine.Data.Test`: contains some unit tests for the data layer
