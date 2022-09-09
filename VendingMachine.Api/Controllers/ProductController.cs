@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using VendingMachine.Core.Core;
+using VendingMachine.Core;
 using VendingMachine.Core.Services;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 using VendingMachineApi.Authorization;
 
 namespace VendingMachineApi.Controllers;

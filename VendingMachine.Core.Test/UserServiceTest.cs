@@ -2,7 +2,6 @@ using Moq;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Core.Services;
 using VendingMachine.Model;
-using VendingMachine.Model.Models;
 
 namespace VendingMachineTest;
 

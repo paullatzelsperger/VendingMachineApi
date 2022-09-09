@@ -1,6 +1,6 @@
 using FluentAssertions;
 using VendingMachine.Data.DataAccess;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachine.Data.Test;
 

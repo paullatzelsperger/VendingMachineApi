@@ -4,7 +4,6 @@ using System.Text.Json;
 using FluentAssertions;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Model;
-using VendingMachine.Model.Models;
 using VendingMachineApi.Controllers;
 
 namespace VendingMachineApi.IntegrationTest;

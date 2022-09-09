@@ -5,7 +5,7 @@ using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using VendingMachine.Core.Services;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachineApi.Authentication;
 /// <summary>

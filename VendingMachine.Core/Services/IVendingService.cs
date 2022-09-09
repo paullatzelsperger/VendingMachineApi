@@ -1,5 +1,4 @@
 using VendingMachine.Model;
-using VendingMachine.Model.Models;
 
 namespace VendingMachine.Core.Services;
 

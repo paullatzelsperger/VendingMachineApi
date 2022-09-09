@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Data.DataAccess;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachineApi.IntegrationTest;
 

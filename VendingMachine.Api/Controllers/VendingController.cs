@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using VendingMachine.Core.Core;
+using VendingMachine.Core;
 using VendingMachine.Core.Services;
 using VendingMachineApi.Authorization;
 

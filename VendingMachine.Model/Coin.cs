@@ -1,4 +1,4 @@
-namespace VendingMachine.Model.Models;
+namespace VendingMachine.Model;
 
 /// <summary>
 /// Represents a stack of coins that can be put into or output by a vending machine. Has a value (e.g. "20 cents") and an

@@ -1,4 +1,4 @@
-namespace VendingMachine.Model.Models;
+namespace VendingMachine.Model;
 
 /// <summary>
 /// Response object when buying a <see cref="Product"/> from a vending machine.

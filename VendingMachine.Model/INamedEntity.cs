@@ -1,4 +1,4 @@
-namespace VendingMachine.Model.Models;
+namespace VendingMachine.Model;
 
 /// <summary>
 /// Interface for all persistent entities

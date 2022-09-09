@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using VendingMachine.Core.Core;
-using VendingMachine.Model.Models;
+using VendingMachine.Core;
+using VendingMachine.Model;
 
 namespace VendingMachineApi.Authorization;
 

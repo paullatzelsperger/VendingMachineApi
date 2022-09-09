@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Data.DataAccess;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachine.Data;
 

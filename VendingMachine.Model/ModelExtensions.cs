@@ -1,5 +1,3 @@
-using VendingMachine.Model.Models;
-
 namespace VendingMachine.Model;
 
 public static class ModelExtensions

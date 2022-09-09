@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachine.Data.DataAccess;
 

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace VendingMachine.Model.Models;
+namespace VendingMachine.Model;
 
 /// <summary>
 /// Model class for a user

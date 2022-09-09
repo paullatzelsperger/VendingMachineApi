@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using VendingMachine.Core.DataAccess;
-using VendingMachine.Model.Models;
+using VendingMachine.Model;
 
 namespace VendingMachineApi.IntegrationTest;
 
