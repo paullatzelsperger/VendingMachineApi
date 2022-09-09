@@ -4,9 +4,9 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using VendingMachine.Core.DataAccess;
 using VendingMachine.Data.DataAccess;
-using VendingMachineApi.DataAccess;
-using VendingMachineApi.Models;
+using VendingMachine.Model.Models;
 
 namespace VendingMachineApi.IntegrationTest;
 

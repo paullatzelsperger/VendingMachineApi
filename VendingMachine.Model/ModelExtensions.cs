@@ -1,4 +1,4 @@
-using VendingMachineApi.Models;
+using VendingMachine.Model.Models;
 
 namespace VendingMachine.Model;
 

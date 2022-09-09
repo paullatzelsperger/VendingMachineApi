@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using VendingMachineApi.DataAccess;
-using VendingMachineApi.Models;
+using VendingMachine.Core.DataAccess;
+using VendingMachine.Model.Models;
 
 namespace VendingMachine.Data.DataAccess;
 
@@ -57,14 +57,6 @@ public class DbUserStore : IEntityStore<User>
     public async Task<bool> Update(User newUserValues)
     {
         await using var ctx = new UserContext();
-        var exists = await UpdateInternal(newUserValues, ctx);
-
-        await ctx.SaveChangesAsync();
-        return exists;
-    }
-
-    private async Task<bool> UpdateInternal(User newUserValues, UserContext ctx)
-    {
         var existing = ctx.Users.FirstOrDefault(u => u.Id == newUserValues.Id);
         var exists = existing != null;
         if (existing != null)
@@ -72,8 +64,10 @@ public class DbUserStore : IEntityStore<User>
             existing.Deposit = newUserValues.Deposit;
             existing.Username = newUserValues.Username;
             existing.Roles = newUserValues.Roles;
+            await ctx.SaveChangesAsync();
         }
-
+       
         return exists;
     }
+
 }

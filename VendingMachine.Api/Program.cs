@@ -1,8 +1,6 @@
 using VendingMachine.Core.Services;
 using VendingMachine.Data;
 using VendingMachineApi.Authentication;
-using VendingMachineApi.DataAccess;
-using VendingMachineApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -55,4 +53,7 @@ app.MapControllers();
 app.Run();
 
 // must be made public so that the test project can access it. cf https://stackoverflow.com/a/70490057
-public partial class Program { }
+namespace VendingMachineApi
+{
+    public partial class Program { }
+}

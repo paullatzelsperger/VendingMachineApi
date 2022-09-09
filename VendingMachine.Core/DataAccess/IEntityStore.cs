@@ -1,6 +1,6 @@
-using VendingMachineApi.Models;
+using VendingMachine.Model.Models;
 
-namespace VendingMachineApi.DataAccess;
+namespace VendingMachine.Core.DataAccess;
 
 /// <summary>
 /// Interface for data retention.

@@ -1,4 +1,4 @@
-namespace VendingMachineApi.Models;
+namespace VendingMachine.Model.Models;
 
 /// <summary>
 /// Value object to hold user information excluding the password. It is intended for the read and update requests of the user API.

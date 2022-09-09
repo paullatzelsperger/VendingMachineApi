@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using VendingMachineApi.Models;
+using VendingMachine.Model.Models;
 
 namespace VendingMachineApi.Controllers;
 

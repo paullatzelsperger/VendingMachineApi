@@ -21,5 +21,6 @@
 
     <ItemGroup>
         <InternalsVisibleTo Include="VendingMachine.Api.Test" />
+        <InternalsVisibleTo Include="VendingMachine.Data.Test" />
     </ItemGroup>
 </Project>

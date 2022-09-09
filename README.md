@@ -20,11 +20,15 @@ These are the assumptions and adaptations I made:
 
 ## Project structure
 The project is written in .NET 6 using the C# 10 language level. The solution consists of 3 projects:
-- `VendingMachine.Api`: contains all domain models, services, application glue code and api controllers etc. This is the application project itself.
-- `VendingMachine.Test`: contains unit tests for all the services
-- `VendingMachine.IntegrationTest`: contains integrations/e2e tests for all controllers
+- `VendingMachine.Api`: contains all application glue code and api controllers etc. This is the runnable application project.
+- `VendingMachine.Api.Test`: this contains integration/e2e tests for the application
+- `VendingMachine.Core`: contains services and some core interfaces
+- `VendingMachine.Core`: contains model classes, e.g. `User`, `Project`,...
+- `VendingMachine.Core.Test`: contains tests for the core project
+- `VendingMachine.Data`: data layer, i.e. EF Core integration
+- `VendingMachine.Data.Test`: contains some unit tests for the data layer
 
-Further separating the solution in projects such as `.Api`, `.Core`, `.Models` and `.Data` would be possible but was skipped here to keep things simple.
+
 
 ## Run the project
 Simply clone the project and - assuming you have .NET 6 installed and available in `$PATH` - run the following command on a shell:

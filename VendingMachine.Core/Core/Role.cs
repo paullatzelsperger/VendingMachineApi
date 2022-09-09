@@ -1,4 +1,4 @@
-namespace VendingMachineApi.Core;
+namespace VendingMachine.Core.Core;
 
 public enum Role
 {

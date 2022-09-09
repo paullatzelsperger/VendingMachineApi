@@ -1,5 +1,5 @@
-using VendingMachineApi.DataAccess;
-using VendingMachineApi.Models;
+using VendingMachine.Core.DataAccess;
+using VendingMachine.Model.Models;
 
 namespace VendingMachine.Core.Services;
 

@@ -11,11 +11,16 @@
     &lt;/TestAncestor&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=43808f68_002D45af_002D4c08_002Da430_002D5713d65408bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="2" IsActive="True" Name="All tests from &amp;lt;VendingMachineApi.IntegrationTest&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=43808f68_002D45af_002D4c08_002Da430_002D5713d65408bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="2" Name="All tests from &amp;lt;VendingMachineApi.IntegrationTest&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachineApi.IntegrationTest" Presentation="&amp;lt;VendingMachineApi.IntegrationTest&amp;gt;" /&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Test" Presentation="&amp;lt;VendingMachine.Test&amp;gt;" /&gt;
   &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=54c96f04_002D86a5_002D4511_002Da6d6_002D64d71afb5872/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="TestUpdate" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;xUnit::0BBF5CD5-F916-4280-8875-A975BEDAB47B::net6.0::VendingMachine.Data.Test.DbUserStoreTest&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=55d1bcfd_002De196_002D4111_002D8d6d_002D9c286e11a13e/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" Name="All tests from ProductServiceTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachineTest" Presentation="&amp;lt;VendingMachineTest&amp;gt;" /&gt;
