@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Moq;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Core.Services;
@@ -17,16 +18,10 @@ public class UserServiceTest
     }
 
     [Fact]
-    public void Test1()
-    {
-        Assert.NotNull(userService);
-    }
-
-    [Fact]
     public async Task TestCreate()
     {
         var res = await userService.Create(TestUser());
-        Assert.True(res.Succeeded);
+        res.Succeeded.Should().BeTrue();
     }
 
     [Fact]
@@ -35,8 +30,8 @@ public class UserServiceTest
         userStoreMock.Setup(store => store.FindById(It.IsAny<string>())).ReturnsAsync(TestUser);
 
         var res = await userService.Create(TestUser());
-        Assert.False(res.Succeeded);
-        Assert.Equal("Exists", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Exists");
     }
 
     [Fact]
@@ -49,7 +44,7 @@ public class UserServiceTest
         u.Roles = new[] { "SomeNewRole" };
 
         var res = await userService.Update(u.Id, u.AsDto());
-        Assert.True(res.Succeeded);
+        res.Succeeded.Should().BeTrue();
     }
 
     [Fact]
@@ -61,8 +56,8 @@ public class UserServiceTest
         u.Roles = new[] { "SomeNewRole" };
 
         var res = await userService.Update(u.Id, u.AsDto());
-        Assert.True(res.Failed);
-        Assert.Equal("Not Found", res.FailureMessage, ignoreCase: true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not Found");
     }
 
     [Fact]
@@ -75,8 +70,9 @@ public class UserServiceTest
         u.Roles = new[] { "SomeNewRole" };
 
         var res = await userService.Update(u.Id, u.AsDto());
-        Assert.True(res.Failed);
-        Assert.Equal("Failed to update", res.FailureMessage, ignoreCase: true);
+        
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Failed to update");
     }
 
     [Fact]
@@ -85,8 +81,7 @@ public class UserServiceTest
         var u = TestUser();
         userStoreMock.Setup(s => s.FindById(It.IsAny<string>())).ReturnsAsync(() => u);
         userStoreMock.Setup(s => s.Delete(It.IsAny<User>())).ReturnsAsync(true);
-
-        Assert.True((await userService.Delete(u.Id)).Succeeded);
+        (await userService.Delete(u.Id)).Succeeded.Should().BeTrue();
     }
 
     [Fact]
@@ -97,8 +92,8 @@ public class UserServiceTest
         userStoreMock.Setup(s => s.Delete(It.IsAny<User>())).ReturnsAsync(true);
 
         var res = await userService.Delete(u.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not Found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not Found");
     }
 
     [Fact]
@@ -109,8 +104,8 @@ public class UserServiceTest
         userStoreMock.Setup(s => s.Delete(It.IsAny<User>())).ReturnsAsync(false);
 
         var res = await userService.Delete(u.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Failed to remove", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Failed to remove");
     }
 
     [Fact]
@@ -119,23 +114,24 @@ public class UserServiceTest
         var u = TestUser();
         userStoreMock.Setup(x => x.FindById(u.Id)).ReturnsAsync(() => u);
         var res = await userService.GetById(u.Id);
-        Assert.True(res.Succeeded);
-        Assert.Equal(u, res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeEquivalentTo(u);
 
         var res2 = await userService.GetById("not-exist");
-        Assert.False(res2.Succeeded);
+        res2.Succeeded.Should().BeFalse();
     }
+
     [Fact]
     public async Task TestGetById_Notfound()
     {
         var u = TestUser();
         userStoreMock.Setup(x => x.FindById(u.Id)).ReturnsAsync(() => null);
         var res = await userService.GetById(u.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not found");
 
         var res2 = await userService.GetById("not-exist");
-        Assert.False(res2.Succeeded);
+        res2.Succeeded.Should().BeFalse();
     }
 
     [Fact]
@@ -145,7 +141,7 @@ public class UserServiceTest
         userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
         var res = await userService.Authenticate(u.Name, u.Password!);
-        Assert.True(res.Succeeded);
+        res.Succeeded.Should().BeTrue();
     }
 
     [Fact]
@@ -155,8 +151,8 @@ public class UserServiceTest
         userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
         var res = await userService.Authenticate("not-exist", "some-pwd");
-        Assert.True(res.Failed);
-        Assert.Equal("Not Found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not Found");
     }
 
     [Fact]
@@ -166,8 +162,8 @@ public class UserServiceTest
         userStoreMock.Setup(x => x.FindByName(u.Name)).ReturnsAsync(() => u);
 
         var res = await userService.Authenticate(u.Name, "wrong-pwd");
-        Assert.True(res.Failed);
-        Assert.Equal("Authentication failed", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Authentication failed");
     }
 
     private User TestUser()

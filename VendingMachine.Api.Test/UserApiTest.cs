@@ -56,8 +56,7 @@ public class UserApiTest : ApiTest
     [Fact]
     public async Task TestGetUserById_NotAuthenticated()
     {
-        var creds = CreateBasicAuthHeader("some-user", "some-pwd");
-        HttpClient.DefaultRequestHeaders.Authorization = creds;
+        Authenticate("some-user", "some-pwd");
 
         var id = TestUser.Id;
         var response = await HttpClient.GetAsync($"api/user/{id}");
@@ -72,8 +71,7 @@ public class UserApiTest : ApiTest
         await userStore.Save(user);
 
         var id = TestUser.Id;
-        var creds = CreateBasicAuthHeader(user.Username!, user.Password!);
-        HttpClient.DefaultRequestHeaders.Authorization = creds;
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.GetAsync($"api/user/{id}");
         response.IsSuccessStatusCode.Should().BeTrue();
@@ -87,8 +85,7 @@ public class UserApiTest : ApiTest
         await userStore.Save(user);
 
         var id = TestUser.Id;
-        var creds = CreateBasicAuthHeader(user.Username!, user.Password!);
-        HttpClient.DefaultRequestHeaders.Authorization = creds;
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.GetAsync($"api/user/{id}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
@@ -113,7 +110,7 @@ public class UserApiTest : ApiTest
         var user = CreateUser(); // no admin
         await userStore.Save(user);
 
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.GetAsync("api/User");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);
@@ -124,7 +121,7 @@ public class UserApiTest : ApiTest
     {
         var user = CreateUser(); // no admin
         await userStore.Save(user);
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+        Authenticate(user.Username!, user.Password!);
 
         var modifiedUser = CreateUser(); //identical
         modifiedUser.Username = "modified username";
@@ -134,7 +131,6 @@ public class UserApiTest : ApiTest
         JsonSerializer.Deserialize<UserDto>(await response.Content.ReadAsStringAsync(), JsonOptions)
                       .Should().BeEquivalentTo(modifiedUser.AsDto());
         (await userStore.FindAll()).Should().HaveCount(2);
-
     }
 
     [Fact]
@@ -153,8 +149,8 @@ public class UserApiTest : ApiTest
             Roles = Array.Empty<string>()
         };
         await userStore.Save(user2);
-        
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+
+        Authenticate(user.Username!, user.Password!);
 
         user2.Username = "modified username"; // modify username
 
@@ -178,8 +174,8 @@ public class UserApiTest : ApiTest
             Roles = Array.Empty<string>()
         };
         await userStore.Save(user2);
-        
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+
+        Authenticate(user.Username!, user.Password!);
 
         user2.Username = "modified username"; // modify username
 
@@ -193,7 +189,7 @@ public class UserApiTest : ApiTest
         var user = CreateUser();
         user.Roles = new[] { "buyer" }; // self is allowed to modify
         await userStore.Save(user);
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.DeleteAsync($"api/User/{user.Id}");
         response.IsSuccessStatusCode.Should().BeTrue();
@@ -211,9 +207,9 @@ public class UserApiTest : ApiTest
             Username = "delete-user", Deposit = 15, Id = "deluser", Password = "pwd", Roles = Array.Empty<string>()
         };
         await userStore.Save(userToDelete);
-        
-        
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+
+
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.DeleteAsync($"api/User/{userToDelete.Id}");
         response.IsSuccessStatusCode.Should().BeTrue();
@@ -231,9 +227,9 @@ public class UserApiTest : ApiTest
             Username = "delete-user", Deposit = 15, Id = "deluser", Password = "pwd", Roles = Array.Empty<string>()
         };
         await userStore.Save(userToDelete);
-        
-        
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username!, user.Password!);
+
+
+        Authenticate(user.Username!, user.Password!);
 
         var response = await HttpClient.DeleteAsync($"api/User/{userToDelete.Id}");
         response.StatusCode.Should().Be(HttpStatusCode.Forbidden);

@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Moq;
 using VendingMachine.Core.Services;
 using VendingMachine.Model;
@@ -32,13 +33,13 @@ public class VendingServiceTest
         productServiceMock.Setup(x => x.SellAmount(productId, amount)).ReturnsAsync(() => ServiceResult<int>.Success(p.AmountAvailable.GetValueOrDefault(0) - amount));
 
         var res = await vendingService.Buy(u, productId, amount);
-        Assert.True(res.Succeeded);
+        res.Succeeded.Should().BeTrue();
 
         var resp = res.Content!;
-        Assert.Equal(850, resp.TotalAmountSpent);
-        Assert.Equal(2, resp.Change.Length);
-        Assert.Equal(41, resp.Change[0].Amount);
-        Assert.Equal(1, resp.Change[1].Amount);
+        resp.TotalAmountSpent.Should().Be(850);
+        resp.Change.Should().HaveCount(2);
+        resp.Change[0].Amount.Should().Be(41);
+        resp.Change[1].Amount.Should().Be(1);
     }
 
     [Fact]
@@ -52,8 +53,8 @@ public class VendingServiceTest
         productServiceMock.Setup(x => x.GetById("some-product")).ReturnsAsync(() => ServiceResult<Product>.Success(p));
 
         var res = await vendingService.Buy(u, "some-product", 17);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Insufficient funds", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Insufficient funds");
     }
 
     [Fact]
@@ -71,8 +72,8 @@ public class VendingServiceTest
 
 
         var res = await vendingService.Buy(u, productId, amount);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not enough stock", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not enough stock");
     }
 
     [Fact]
@@ -86,8 +87,8 @@ public class VendingServiceTest
 
 
         var res = await vendingService.Buy(u, "test-prod-id", amount);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not found");
         productServiceMock.Verify(x => x.SellAmount(It.IsAny<string>(), It.IsAny<int>()), Times.Never);
     }
 
@@ -99,8 +100,8 @@ public class VendingServiceTest
         userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Success(u));
 
         var res = await vendingService.ResetBalance(u);
-        Assert.True(res.Succeeded);
-        Assert.Null(res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeNull();
     }
 
     [Fact]
@@ -109,7 +110,7 @@ public class VendingServiceTest
         var u = TestUser();
         userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
         var res = await vendingService.ResetBalance(u);
-        Assert.False(res.Succeeded);
+        res.Succeeded.Should().BeFalse();
     }
 
     [Theory]
@@ -125,8 +126,8 @@ public class VendingServiceTest
         userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(ServiceResult<User>.Success);
 
         var res = await vendingService.Deposit(u, amount);
-        Assert.True(res.Succeeded);
-        Assert.Null(res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeNull();
     }
 
     [Theory]
@@ -138,8 +139,8 @@ public class VendingServiceTest
     {
         var u = TestUser();
         var res = await vendingService.Deposit(u, amount);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Invalid deposit", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Invalid deposit");
         userServiceMock.VerifyNoOtherCalls();
     }
 
@@ -150,8 +151,8 @@ public class VendingServiceTest
         userServiceMock.Setup(x => x.Update(u.Id, u.AsDto())).ReturnsAsync(() => ServiceResult<User>.Failure("Failed to update"));
 
         var res = await vendingService.Deposit(u, 50);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Failed to update", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Failed to update");
     }
 
 

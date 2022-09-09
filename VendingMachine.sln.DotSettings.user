@@ -11,7 +11,7 @@
     &lt;/TestAncestor&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3cab8480_002Daf85_002D4593_002D80ef_002Df28a78aad0ca/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3cab8480_002Daf85_002D4593_002D80ef_002Df28a78aad0ca/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="2" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Core.Test" Presentation="&amp;lt;VendingMachine.Core.Test&amp;gt;" /&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Data.Test" Presentation="&amp;lt;VendingMachine.Data.Test&amp;gt;" /&gt;

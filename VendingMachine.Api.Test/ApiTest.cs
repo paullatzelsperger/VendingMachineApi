@@ -44,7 +44,7 @@ public class ApiTest : IDisposable
 
         userStore = GetService(type) as IEntityStore<User> ?? throw new InvalidOperationException();
         userStore.Save(user);
-        HttpClient.DefaultRequestHeaders.Authorization = CreateBasicAuthHeader(user.Username, user.Password);
+        Authenticate(user.Username, user.Password);
     }
 
     protected object? GetService(Type type)
@@ -52,12 +52,13 @@ public class ApiTest : IDisposable
         return webAppFactory.Services.GetService(type);
     }
 
-    protected AuthenticationHeaderValue? CreateBasicAuthHeader(string user, string pwd)
+
+    protected void Authenticate(string user, string pwd)
     {
         var credential = $"{user}:{pwd}";
-        return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(credential)));
+        var header =  new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(credential)));
+        HttpClient.DefaultRequestHeaders.Authorization = header;
     }
-    
     private User ReloadTestUser()
     {
         var t = userStore?.FindById(TestUserId);

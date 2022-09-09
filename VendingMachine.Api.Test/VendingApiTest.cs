@@ -116,8 +116,7 @@ public class VendingApiTest : ApiTest
     [Fact]
     public async Task TestDeposit_UserNotFound()
     {
-        var credentials = CreateBasicAuthHeader("some-other", "some-pwd");
-        HttpClient.DefaultRequestHeaders.Authorization = credentials;
+        Authenticate("some-other", "some-pwd");
         const int deposit = 50;
         var response = await HttpClient.PostAsync($"api/vending/deposit?amount={deposit}", null);
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
@@ -126,8 +125,7 @@ public class VendingApiTest : ApiTest
     [Fact]
     public async Task TestResetBalance_UserNotFound()
     {
-        var credentials = CreateBasicAuthHeader("some-other", "some-pwd");
-        HttpClient.DefaultRequestHeaders.Authorization = credentials;
+        Authenticate("some-other", "some-pwd");
         var response = await HttpClient.PostAsync($"api/vending/reset", null);
         Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
     }

@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Moq;
 using VendingMachine.Core.DataAccess;
 using VendingMachine.Core.Services;
@@ -23,8 +24,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.FindById(p.Id)).ReturnsAsync(() => p);
 
         var res = await productService.GetById(p.Id);
-        Assert.True(res.Succeeded);
-        Assert.Equal(p, res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeEquivalentTo(p);
     }
 
     [Fact]
@@ -34,7 +35,7 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.FindById(p.Id)).ReturnsAsync(() => null);
 
         var res = await productService.GetById(p.Id);
-        Assert.False(res.Succeeded);
+        res.Succeeded.Should().BeFalse();
     }
 
     [Fact]
@@ -45,9 +46,9 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Save(p)).ReturnsAsync(p);
 
         var res = await productService.Create(u, p);
-        Assert.True(res.Succeeded);
-        Assert.Equal(p, res.Content);
-        Assert.Equal(u.Id, p.SellerId);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeEquivalentTo(p);
+        p.SellerId.Should().Be(u.Id);
     }
 
     [Fact]
@@ -59,8 +60,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Save(p)).ReturnsAsync(() => p);
 
         var res = await productService.Create(u, p);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Exists", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Exists");
         productStoreMock.Verify(x => x.Save(It.IsAny<Product>()), Times.Never);
     }
 
@@ -77,8 +78,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Save(p)).ReturnsAsync(() => p);
 
         var res = await productService.Create(u, p);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Invalid cost", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Invalid cost");
         productStoreMock.Verify(x => x.Save(It.IsAny<Product>()), Times.Never);
     }
 
@@ -94,8 +95,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Save(p)).ReturnsAsync(() => p);
 
         var res = await productService.Create(u, p);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Invalid amount", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Invalid amount");
         productStoreMock.Verify(x => x.Save(It.IsAny<Product>()), Times.Never);
     }
 
@@ -109,8 +110,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Delete(p)).ReturnsAsync(() => true);
 
         var res = await productService.Delete(u, p.Id);
-        Assert.True(res.Succeeded);
-        Assert.Equal(p, res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().BeEquivalentTo(p);
     }
 
     [Fact]
@@ -122,8 +123,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.FindById(p.Id)).ReturnsAsync(() => null);
 
         var res = await productService.Delete(u, p.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not found");
         productStoreMock.Verify(x => x.Delete(It.IsAny<Product>()), Times.Never);
     }
 
@@ -135,8 +136,9 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.FindById(p.Id)).ReturnsAsync(() => p);
 
         var res = await productService.Delete(u, p.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not authorized", res.FailureMessage, true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not Authorized");
+        
         productStoreMock.Verify(x => x.Delete(It.IsAny<Product>()), Times.Never);
     }
 
@@ -150,8 +152,8 @@ public class ProductServiceTest
         productStoreMock.Setup(x => x.Delete(p)).ReturnsAsync(() => false);
 
         var res = await productService.Delete(u, p.Id);
-        Assert.False(res.Succeeded);
-        Assert.Equal("Failed to delete", res.FailureMessage, true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Failed to delete");
     }
 
     [Fact]
@@ -173,10 +175,12 @@ public class ProductServiceTest
 
         var res = await productService.Update(u, p.Id, newProduct);
 
-        Assert.True(res.Succeeded);
-        Assert.Equal(150, res.Content!.Cost);
-        Assert.Equal(19, res.Content!.AmountAvailable);
-        Assert.Equal("New Name", res.Content.Name);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().NotBeNull();
+        res.Content!.Cost.Should().Be(150);
+        res.Content.AmountAvailable.Should().Be(19);
+        res.Content.Name.Should().Be("New Name");
+        
     }
 
     [Fact]
@@ -197,8 +201,8 @@ public class ProductServiceTest
 
         var res = await productService.Update(u, p.Id, newProduct);
 
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not found", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not found");
     }
 
     [Fact]
@@ -219,8 +223,8 @@ public class ProductServiceTest
 
         var res = await productService.Update(u, p.Id, newProduct);
 
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not authorized", res.FailureMessage, true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not Authorized");
     }
 
     [Theory]
@@ -245,8 +249,8 @@ public class ProductServiceTest
 
         var res = await productService.Update(u, p.Id, newProduct);
 
-        Assert.False(res.Succeeded);
-        Assert.Equal("Invalid cost", res.FailureMessage, true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Invalid cost");
     }
 
     [Theory]
@@ -270,8 +274,8 @@ public class ProductServiceTest
 
         var res = await productService.Update(u, p.Id, newProduct);
 
-        Assert.False(res.Succeeded);
-        Assert.Equal("Invalid amount", res.FailureMessage, true);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Invalid amount");
     }
 
     [Fact]
@@ -284,8 +288,8 @@ public class ProductServiceTest
 
         var res = await productService.SellAmount(p.Id, 12);
 
-        Assert.True(res.Succeeded);
-        Assert.Equal(8, res.Content);
+        res.Succeeded.Should().BeTrue();
+        res.Content.Should().Be(8);
         productStoreMock.Verify(x => x.Update(It.IsAny<Product>()), Times.Once);
         productStoreMock.Verify(x => x.Save(It.IsAny<Product>()), Times.Never);
     }
@@ -300,11 +304,10 @@ public class ProductServiceTest
 
         var res = await productService.SellAmount(p.Id, 22);
 
-        Assert.False(res.Succeeded);
-        Assert.Equal("Not enough stock", res.FailureMessage);
+        res.Succeeded.Should().BeFalse();
+        res.FailureMessage.Should().Be("Not enough stock");
         productStoreMock.Verify(x => x.Update(It.IsAny<Product>()), Times.Never);
         productStoreMock.Verify(x => x.Save(It.IsAny<Product>()), Times.Never);
-
     }
 
     private Product TestProduct()
