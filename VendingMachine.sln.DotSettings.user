@@ -11,13 +11,20 @@
     &lt;/TestAncestor&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3cab8480_002Daf85_002D4593_002D80ef_002Df28a78aad0ca/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Or&gt;
+    &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Core.Test" Presentation="&amp;lt;VendingMachine.Core.Test&amp;gt;" /&gt;
+    &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Data.Test" Presentation="&amp;lt;VendingMachine.Data.Test&amp;gt;" /&gt;
+    &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Api.Test" Presentation="&amp;lt;VendingMachine.Api.Test&amp;gt;" /&gt;
+  &lt;/Or&gt;
+&lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=43808f68_002D45af_002D4c08_002Da430_002D5713d65408bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="2" Name="All tests from &amp;lt;VendingMachineApi.IntegrationTest&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Or&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachineApi.IntegrationTest" Presentation="&amp;lt;VendingMachineApi.IntegrationTest&amp;gt;" /&gt;
     &lt;Project Location="/Users/paullatzelsperger/dev/playground/VendingMachine/VendingMachine.Test" Presentation="&amp;lt;VendingMachine.Test&amp;gt;" /&gt;
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=54c96f04_002D86a5_002D4511_002Da6d6_002D64d71afb5872/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" IsActive="True" Name="TestUpdate" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=54c96f04_002D86a5_002D4511_002Da6d6_002D64d71afb5872/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="True" ContinuousTestingMode="1" Name="TestUpdate" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;TestAncestor&gt;
     &lt;TestId&gt;xUnit::0BBF5CD5-F916-4280-8875-A975BEDAB47B::net6.0::VendingMachine.Data.Test.DbUserStoreTest&lt;/TestId&gt;
   &lt;/TestAncestor&gt;

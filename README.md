@@ -10,7 +10,7 @@ These are the assumptions and adaptations I made:
 - the CRUD endpoint for `/user` does not allow to change the password. While it would be trivial to implement, in real-world scenarios there usually is a dedicated endpoint and workflow for that.
 - the `/user` endpoint uses a `UserDto` for reading and updating, that does not have the password for data privacy/security reasons.
 - Added the `admin` role: in addition to the `buyer` and `seller` role, the `admin` role was added. I did this to improve security of the `/user` API. Only admins can see all users, or see, modify and delete other users. However, every user can see, update and delete its own record.
-- In-memory stores: currently all data retention happens in-memory using the `InMemory` provider. Using EF Core, this could be swapped out for a persistent storage, such as Postgres.
+- In-memory stores: currently all data retention happens through EF Core using the `InMemory` provider. Using EF Core, this could be swapped out for a persistent storage, such as Postgres, in which case migrations would have to be taken into consideration as well.
 - Ownership of a product cannot be transferred: the spec states:
   > while POST, PUT and DELETE can be called only by the seller user who created the product
   
