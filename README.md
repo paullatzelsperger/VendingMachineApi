@@ -35,6 +35,11 @@ Simply clone the project and - assuming you have .NET 6 installed and available 
 ```bash
 dotnet run
 ```
+Alternatively, if you want to use docker, run
+```bash
+docker build -f VendingMachine.Api/Dockerfile -t vendingmachine
+docker run --name vending -p 5198:80 vendingmachine:latest
+```
 If you only want to run the tests, simply execute
 ```bash
 dotnet test
