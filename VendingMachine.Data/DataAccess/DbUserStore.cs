@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 
-namespace VendingMachineApi.DataAccess;
+namespace VendingMachine.Data.DataAccess;
 
 public class DbUserStore : IEntityStore<User>
 {

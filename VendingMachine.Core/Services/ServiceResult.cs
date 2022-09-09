@@ -1,4 +1,4 @@
-namespace VendingMachineApi.Services;
+namespace VendingMachine.Core.Services;
 
 /// <summary>
 /// Generic wrapper to indicate the result of something. Whenever the result of an operation is

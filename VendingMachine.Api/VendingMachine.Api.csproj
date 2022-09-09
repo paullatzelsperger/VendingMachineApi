@@ -8,18 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.8" />
+
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
     </ItemGroup>
 
     <ItemGroup>
-        <InternalsVisibleTo Include="VendingMachine.Test" />
-        <InternalsVisibleTo Include="VendingMachine.IntegrationTest" />
+      <ProjectReference Include="..\VendingMachine.Core\VendingMachine.Core.csproj" />
+      <ProjectReference Include="..\VendingMachine.Data\VendingMachine.Data.csproj" />
+      <ProjectReference Include="..\VendingMachine.Model\VendingMachine.Model.csproj" />
     </ItemGroup>
 
 

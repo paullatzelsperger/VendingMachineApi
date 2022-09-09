@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
+using VendingMachine.Data.DataAccess;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 

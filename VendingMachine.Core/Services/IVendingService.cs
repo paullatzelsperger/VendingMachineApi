@@ -1,7 +1,7 @@
-using VendingMachineApi.Controllers;
+using VendingMachine.Model;
 using VendingMachineApi.Models;
 
-namespace VendingMachineApi.Services;
+namespace VendingMachine.Core.Services;
 
 public interface IVendingService
 {

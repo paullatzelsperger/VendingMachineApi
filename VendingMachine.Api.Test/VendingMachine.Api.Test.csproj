@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\VendingMachine.Api\VendingMachine.Api.csproj" />
+      <ProjectReference Include="..\VendingMachine.Data\VendingMachine.Data.csproj" />
     </ItemGroup>
 
 </Project>

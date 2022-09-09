@@ -1,7 +1,7 @@
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 
-namespace VendingMachineApi.Services;
+namespace VendingMachine.Core.Services;
 
 public interface IProductService
 {
@@ -54,7 +54,7 @@ public interface IProductService
     Task<ServiceResult<int>> SellAmount(string productId, int amount);
 }
 
-internal class ProductService : IProductService
+public class ProductService : IProductService
 {
     private readonly IEntityStore<Product> productStore;
 

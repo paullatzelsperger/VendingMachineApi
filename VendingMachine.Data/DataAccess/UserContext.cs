@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using VendingMachineApi.Models;
 
-namespace VendingMachineApi.DataAccess;
+namespace VendingMachine.Data.DataAccess;
 
-public class UserContext : DbContext
+internal class UserContext : DbContext
 {
     public DbSet<User> Users { get; set; }
 

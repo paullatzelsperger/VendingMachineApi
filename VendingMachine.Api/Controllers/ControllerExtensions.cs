@@ -11,8 +11,5 @@ public static class ControllerExtensions
         return authenticatedUser!;
     }
 
-    public static UserDto AsDto(this User user)
-    {
-        return new UserDto(user.Id, user.Username!, user.Deposit!.Value, user.Roles);
-    }
+
 }

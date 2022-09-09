@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using FluentAssertions;
+using VendingMachine.Model;
 using VendingMachineApi.Controllers;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;

@@ -1,7 +1,8 @@
+using VendingMachine.Core.Services;
+using VendingMachine.Data;
 using VendingMachineApi.Authentication;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
-using VendingMachineApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -32,8 +33,7 @@ builder.Services.AddAuthentication("Basic")
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IProductService, ProductService>();
 builder.Services.AddTransient<IVendingService, VendingService>();
-builder.Services.AddSingleton<IEntityStore<User>, DbUserStore>();
-builder.Services.AddSingleton<IEntityStore<Product>, DbProductStore>();
+builder.Services.AddDataLayer();
 
 var app = builder.Build();
 

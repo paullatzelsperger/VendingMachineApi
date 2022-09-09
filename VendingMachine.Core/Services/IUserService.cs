@@ -1,7 +1,7 @@
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
 
-namespace VendingMachineApi.Services;
+namespace VendingMachine.Core.Services;
 
 public interface IUserService
 {
@@ -50,7 +50,7 @@ public interface IUserService
     Task<ServiceResult<User>> Authenticate(string username, string password);
 }
 
-internal class UserService : IUserService
+public class UserService : IUserService
 {
     //todo: convert this to a persistent storage, e.g. using EF Core
     private readonly IEntityStore<User> entityStore;

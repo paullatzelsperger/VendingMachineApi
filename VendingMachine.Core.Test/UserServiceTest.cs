@@ -1,8 +1,8 @@
 using Moq;
-using VendingMachineApi.Controllers;
+using VendingMachine.Core.Services;
+using VendingMachine.Model;
 using VendingMachineApi.DataAccess;
 using VendingMachineApi.Models;
-using VendingMachineApi.Services;
 
 namespace VendingMachineTest;
 
